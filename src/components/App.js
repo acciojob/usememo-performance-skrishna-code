@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import "./App.css";
 
 function generateTasks() {
@@ -27,14 +27,15 @@ function filterTasks(tasks, tab) {
   return tasks;
 }
 
+// Artificially expensive computation
 function slowDown() {
-  let result = 0;
+  let value = 0;
 
-  for (let i = 0; i < 5000000; i++) {
-    result += Math.sqrt(i) * Math.sin(i);
+  for (let i = 0; i < 1000000; i++) {
+    value += Math.sqrt(i);
   }
 
-  return result;
+  return value;
 }
 
 function TaskList({ tasks }) {
@@ -44,11 +45,10 @@ function TaskList({ tasks }) {
         slowDown();
 
         return (
-          <div
-            className={`task ${task.completed ? "completed" : ""}`}
-            key={task.id}
-          >
-            <span>{task.title}</span>
+          <div className="task" key={task.id}>
+            <span className={task.completed ? "completed" : ""}>
+              {task.title}
+            </span>
 
             <span className="status">
               {task.completed ? "Completed" : "Active"}
@@ -83,7 +83,7 @@ function App() {
 
           <button
             className="theme-button"
-            onClick={() => setDarkMode(!darkMode)}
+            onClick={() => setDarkMode((prev) => !prev)}
           >
             {darkMode ? "Light Mode" : "Dark Mode"}
           </button>
@@ -112,9 +112,9 @@ function App() {
           </button>
         </div>
 
-        <div className="task-count">
+        <p className="task-count">
           Showing {filteredTasks.length} tasks
-        </div>
+        </p>
 
         <TaskList tasks={filteredTasks} />
       </div>
