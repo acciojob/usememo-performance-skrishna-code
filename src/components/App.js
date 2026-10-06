@@ -30,7 +30,7 @@ function filterTasks(tasks, tab) {
 function slowDown() {
   const start = performance.now();
 
-  while (performance.now() - start < 5) {
+  while (performance.now() - start < 30) {
     // Artificial delay
   }
 }
