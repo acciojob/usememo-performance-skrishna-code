@@ -27,7 +27,7 @@ function filterTasks(tasks, tab) {
   return tasks;
 }
 
-// Artificially expensive computation
+// Artificially slow down the filtering calculation
 function slowDown() {
   let value = 0;
 
@@ -41,21 +41,17 @@ function slowDown() {
 function TaskList({ tasks }) {
   return (
     <div className="task-list">
-      {tasks.map((task) => {
-        slowDown();
+      {tasks.map((task) => (
+        <div className="task" key={task.id}>
+          <span className={task.completed ? "completed" : ""}>
+            {task.title}
+          </span>
 
-        return (
-          <div className="task" key={task.id}>
-            <span className={task.completed ? "completed" : ""}>
-              {task.title}
-            </span>
-
-            <span className="status">
-              {task.completed ? "Completed" : "Active"}
-            </span>
-          </div>
-        );
-      })}
+          <span className="status">
+            {task.completed ? "Completed" : "Active"}
+          </span>
+        </div>
+      ))}
     </div>
   );
 }
@@ -69,12 +65,17 @@ function App() {
   }, []);
 
   const filteredTasks = useMemo(() => {
+    // Expensive calculation happens only
+    // when tasks or tab changes.
+    slowDown();
+
     return filterTasks(tasks, tab);
   }, [tasks, tab]);
 
   return (
     <div className={darkMode ? "app dark" : "app"}>
       <div className="container">
+
         <div className="header">
           <div>
             <h1>Todo App</h1>
@@ -117,6 +118,7 @@ function App() {
         </p>
 
         <TaskList tasks={filteredTasks} />
+
       </div>
     </div>
   );
