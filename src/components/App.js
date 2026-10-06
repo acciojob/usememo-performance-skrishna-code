@@ -28,11 +28,13 @@ function filterTasks(tasks, tab) {
 }
 
 function slowDown() {
-  const start = performance.now();
+  let result = 0;
 
-  while (performance.now() - start < 30) {
-    // Artificial delay
+  for (let i = 0; i < 5000000; i++) {
+    result += Math.sqrt(i) * Math.sin(i);
   }
+
+  return result;
 }
 
 function TaskList({ tasks }) {
